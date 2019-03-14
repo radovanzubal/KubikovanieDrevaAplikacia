@@ -1,13 +1,11 @@
 package app.anew.kubikovaniedreva;
 
 import android.content.Context;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -29,7 +27,6 @@ public class ObsluhaSuboru {
         BufferedReader reader;
         ArrayList<String> arr=new ArrayList<>(0);
         try{
-           // final InputStream file = getAssets().open("text.txt");
             File f = new File(con.getFilesDir(), nazov);
             FileInputStream is = new FileInputStream(f);
             reader = new BufferedReader(new InputStreamReader(is));

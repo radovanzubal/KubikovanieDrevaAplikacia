@@ -22,9 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -68,12 +65,10 @@ public class MainActivity extends Activity {
         boolean ziadost=true;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            //System.out.println("READ=FALSE");
             ziadost=false;
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-          //  System.out.println("WRITE=FALSE");
             ziadost=false;
         }
         if(!ziadost){
@@ -82,13 +77,7 @@ public class MainActivity extends Activity {
                     1);
         }
 
-        /*for(int pr=69;pr>=64;pr--){
-        for(double dl=12.0;dl>=2.0;dl-=0.1){
-        double pomN=SmrekObycajny.getObjemN(pr,dl);
-        System.out.println("priemer"+pr+"dlzka"+dl+"vysledok"+pomN);
-        }
-        }
-*/
+
         this.context=this;
         send.setWidth(screenSirka/4);
         send.setHeight(screenVyska/7/*screenSirka/4*/);
@@ -117,13 +106,13 @@ public class MainActivity extends Activity {
                          final String contaS=edContainer.getText().toString();
                         hlavicka = "Date:" + today + " Contract N:"+edContract.getText().toString()+" Container N:"+edContainer.getText().toString()+" Seal N:"+edSealN.getText();
                     if (mamInternet) {
-                        if (emailZadany.getText().toString().equals("idinvestsro@gmail.com")||emailZadany.getText().toString().equals("idinvest.office@gmail.com")) {//idinvestsro@gmail.com
+                        if (emailZadany.getText().toString().equals("pov1@gmail.com")/*povoleny email1*/||emailZadany.getText().toString().equals("pov2@gmail.com")/*povoleny email2*/) {
                             try {
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try{
-                                                GmailSender sender = new GmailSender("aplikaciakubikovanie@gmail.com"/*"radovanzubal1@gmail.com"*/, /*"lubimzdenku"*/"aplikaciawood",context);
+                                                GmailSender sender = new GmailSender("sender@gmail.com","senderPassword",context);
                                 String textObsah = popisStlpcov;
                                 suma=0;
                                 double average=0;
@@ -138,10 +127,8 @@ public class MainActivity extends Activity {
                                         e.printStackTrace();
                                     }
                                     try {
-                                    //    System.out.println(t+"robim priemer");
                                         int index=pom.indexOf("|",pom.indexOf("|",2));
                                         int rp=Integer.valueOf(pom.substring(index+1,pom.indexOf("|",index+1)).trim());
-                                       // System.out.println(t+"rp"+rp);
                                         average+=rp;
                                     }catch(Exception e){
                                         e.printStackTrace();
@@ -155,7 +142,7 @@ public class MainActivity extends Activity {
                                 bd = bd.setScale(2, RoundingMode.HALF_UP);
                                  poslany = sender.sendMail(("Date: " + today+"  Contract N: "+contS+"  Container N: "+contaS),
                                         ("Contract N: "+contS+"  Container N: "+contaS),
-                                        "aplikaciakubikovanie@gmail.com"/*"radovanzubal1@gmail.com"*/,
+                                        "sender@gmail.com",
                                         emailZadany.getText().toString(),
                                         hlavicka,
                                         textObsah,
@@ -165,39 +152,33 @@ public class MainActivity extends Activity {
                                 );
 
                                 if (poslany) {
-                                    //Toast.makeText(context, "Email poslany!", Toast.LENGTH_SHORT).show();
                                     vymazVsetko();
                                     suma=0;
                                     ktoraFotka=0;
                                     final Button foto=(Button)findViewById(R.id.foto);
-                                    //foto.setText("FOTO1");
                                     foto.post(new Runnable() {
                                         public void run() {
                                             foto.setText("FOTO1");
                                         }
                                     });
                                     final EditText seal=(EditText)findViewById(R.id.sealN);
-                                   // seal.setText("");
                                     seal.post(new Runnable() {
                                         public void run() {
                                             seal.setText("");
                                         }
                                     });
                                     final Button se=(Button)findViewById(R.id.sendit);
-                                    // seal.setText("");
                                     se.post(new Runnable() {
                                         public void run() {
                                             se.setText("Email");
                                         }
                                     });
                                     final EditText edContai=(EditText)findViewById(R.id.cont);
-                                    // seal.setText("");
                                     edContai.post(new Runnable() {
                                         public void run() {
                                             edContai.setText("");
                                         }
                                     });
-                                   // edContainer.setText("");
                                     menaFotiek=new String[3];
                                     menaFotiek[0]="";
                                     menaFotiek[1]="";
@@ -209,21 +190,17 @@ public class MainActivity extends Activity {
                                             csk.setText("Číslo gulatiny: " + scKmen);
                                         }
                                     });
-                                   // cisloKmena.setText("Číslo gulatiny: " + scKmen);
                                     final TextView pos=(TextView)findViewById(R.id.posledny);
                                     pos.post(new Runnable() {
                                         public void run() {
                                             pos.setText("Posledna gulatina");
                                         }
                                     });
-                                    //posledny.setText("Posledna gulatina");
                                     obsahSuboru = new ArrayList<>(0);
                                 } else {
-                                    //Toast.makeText(context, "Chyba pri poslani Emailu!", Toast.LENGTH_SHORT).show();
                                 }
                                         }catch(Exception ee){ee.printStackTrace();
                                                 final Button se=(Button)findViewById(R.id.sendit);
-                                                // seal.setText("");
                                                 se.post(new Runnable() {
                                                     public void run() {
                                                         se.setText("Chyba");
@@ -237,11 +214,7 @@ public class MainActivity extends Activity {
                             } catch (Exception e) {
                                 Toast.makeText(context, "Chyba pri poslani Emailu!", Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
-                            }/*
-                            scKmen = 1;
-                            cisloKmena.setText("Číslo gulatiny: " + scKmen);
-                            posledny.setText("Posledna gulatina");
-                            obsahSuboru = new ArrayList<>(0);*/
+                            }
                         } else {
                             Toast.makeText(context, "Zadaj email vlastníka aplikácie!", Toast.LENGTH_SHORT).show();
                         }
@@ -260,7 +233,7 @@ public class MainActivity extends Activity {
         });
 
         cisloKmena.setWidth(screenSirka/2);
-        cisloKmena.setTextSize(TypedValue.COMPLEX_UNIT_PX,/*screenSirka/32*/screenVyska/35);
+        cisloKmena.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35);
         cisloKmena.setText("Číslo gulatiny:"+scKmen);
         cisloKmena.setX(screenSirka/2);
         cisloKmena.setTextColor(Color.BLACK);
@@ -268,8 +241,8 @@ public class MainActivity extends Activity {
 
         final TextView informacie = (TextView) this.findViewById(R.id.info);
         informacie.setWidth(screenSirka);
-        informacie.setHeight(screenVyska-/*screenSirka-screenSirka/8*/4*screenVyska/7-screenVyska/14);
-        informacie.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35/*screenSirka/48*/);
+        informacie.setHeight(screenVyska-4*screenVyska/7-screenVyska/14);
+        informacie.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35);
         informacie.setX(0);
         informacie.setTextColor(Color.BLACK);
         informacie.setY(0);
@@ -279,11 +252,11 @@ public class MainActivity extends Activity {
 
         final Button infotl = (Button) this.findViewById(R.id.zobrazinfo);
         infotl.setWidth(screenSirka/4);
-        infotl.setHeight(screenVyska/7/*screenSirka/4*/);
-        infotl.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35/*screenSirka/48*/);
+        infotl.setHeight(screenVyska/7);
+        infotl.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35);
         infotl.setX(3*screenSirka/4);
         infotl.setText("Info");
-        infotl.setY(screenVyska-2*screenVyska/7-screenVyska/14/*screenSirka/2-screenSirka/8*/);
+        infotl.setY(screenVyska-2*screenVyska/7-screenVyska/14);
         infotl.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(!zobrazInfo){
@@ -511,41 +484,32 @@ public class MainActivity extends Activity {
                     stlpec3+=" m";
 
                     String stlpec4="";
-                    //Spinner spinner=(Spinner)findViewById(R.id.spinner2);
-                    //int tt= spinner.getSelectedItemPosition();
-                    //if(tt==1){doplnit pre rozne stromy
 
                         stlpec4=String.valueOf((new SmrekObycajny()).getObjemN(pr,dl));
                         suma+=SmrekObycajny.getObjemN(pr,dl);
-                        //System.out.println("Pripocitana suma"+SmrekObycajny.getObjemN(pr,dl));
-                    Toast.makeText(context,"Pridane!"/*+SmrekObycajny.getObjem(pr,dl)*/,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Pridane!",Toast.LENGTH_SHORT).show();
 
-                    // }
                     velkost=stlpec4.length();
                     for(int t=0;t<(11-velkost);t++){
                         stlpec4+=" ";
                     }
                     obsahSuboru.add("|"+stlpec1+"|"+stlpec2+"|"+stlpec3+"|"+stlpec4+"|\n");
-                    //Toast.makeText(context,"|"+stlpec1+"|"+stlpec2+"|"+stlpec3+"|"+stlpec4+"|",Toast.LENGTH_SHORT).show();
                     scKmen++;
                     cisloKmena.setText("Číslo gulatiny: " + scKmen);
                     posledny.setText(obsahSuboru.get(obsahSuboru.size()-1).replace(" ",""));
-                    /*DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    String today = formatter.format(date);
-                    Toast.makeText(context,"Záznam pridaný!",Toast.LENGTH_SHORT).show();*/
+
                 }
             }
         });
         final Button ciarka = (Button) this.findViewById(R.id.ciarka);
         ciarka.setWidth(screenSirka/4);
-        ciarka.setHeight(screenVyska/7/*screenSirka/4*/);
+        ciarka.setHeight(screenVyska/7);
         ciarka.setX(screenSirka/4);
-        ciarka.setY(tl0.getY()/*screenVyska-screenSirka/4-screenSirka/8*/);
+        ciarka.setY(tl0.getY());
         ciarka.setText(",");
         ciarka.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/14);
         ciarka.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("tlacidlociarka");
                 if(ktore==2) {
                     if(dlzka.getText().length()==8){
                         Toast.makeText(context,"Najprv zadaj číslo!",Toast.LENGTH_SHORT).show();
@@ -572,16 +536,9 @@ public class MainActivity extends Activity {
         foto.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35);
         foto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*if(foto.getText().equals("VYMAZ")){
-
-                }else */if(foto.getText().equals("ODFOT")) {
+                if(foto.getText().equals("ODFOT")) {
                     captureImage(ktoraFotka);
-                   /* ktoraFotka++;
-                    if (ktoraFotka == 3) {
-                        ktoraFotka = 0;
-                    }
-                    System.out.println("fotim"+ktoraFotka);
-                    foto.setText("FOTO" + (ktoraFotka+1));*/
+
                 }else{
                     foto.setText("ODFOT");
                 }
@@ -590,22 +547,15 @@ public class MainActivity extends Activity {
         /////////////////////////////////////
         final Button vymaz = (Button) this.findViewById(R.id.vymaz);
         vymaz.setWidth(screenSirka/4);
-        vymaz.setHeight(screenVyska/7/*screenSirka/4*/);
+        vymaz.setHeight(screenVyska/7);
         vymaz.setX(2*screenSirka/4);
-        vymaz.setY(tl0.getY()/*screenVyska-screenSirka/4-screenSirka/8*/);
+        vymaz.setY(tl0.getY());
         vymaz.setText("Vymaž");
-        vymaz.setTextSize(TypedValue.COMPLEX_UNIT_PX,/*screenSirka/48*/screenVyska/35);
+        vymaz.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35);
         vymaz.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("tlacidlovymaz");
                 if(ktore==1) {
 
-                   /* if(priemer.getText().length()>11){
-                        priemer.setText(priemer.getText().toString().substring(0, priemer.getText().length() - 1));
-                    }else{
-                        Toast.makeText(context,"Nie je čo vymazať!",Toast.LENGTH_SHORT).show();
-                    }*/
-                  // if(priemer.gette)
                     int lenP=priemer.getText().toString().length();
                 if(lenP>1){
                     priemer.setText(priemer.getText().toString().substring(0,lenP-1));
@@ -619,11 +569,7 @@ public class MainActivity extends Activity {
                     }else{
                         dlzka.setText("");
                     }
-                    /*if(dlzka.getText().length()>8){
-                        dlzka.setText(dlzka.getText().toString().substring(0, dlzka.getText().length() - 1));
-                    }else{
-                        Toast.makeText(context,"Nie je čo vymazať!",Toast.LENGTH_SHORT).show();
-                    }*/
+
                 }else if(ktore==3) {
                     if(scKmen>1){
                         scKmen--;
@@ -641,29 +587,11 @@ public class MainActivity extends Activity {
             }
         });
 
-
-       /* Spinner spin=(Spinner) this.findViewById(R.id.spinner2);
-        List<String> list = new ArrayList<String>();
-        list.add("Smrek obycajny");
-        list.add("Borovica lesna");
-        list.add("Dub letny");
-        list.add("Dub zimny");
-        list.add("Buk lesny");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_dropdown_item, list);
-        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin.setAdapter(dataAdapter);
-
-        spin.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-*/
-
-        //int medzera=((screenVyska-screenSirka)-/*spin.getHeight()*/screenVyska/14-screenSirka/4-screenSirka/8)/3;
-
         dlzka.setWidth(screenSirka/2-5);
         dlzka.setHeight(screenVyska/14);
         dlzka.setX(0);
-        dlzka.setY(screenVyska-5*screenVyska/7/*screenVyska-screenSirka-medzera-dlzka.getHeight()-screenSirka/8*/);
-        dlzka.setTextSize(TypedValue.COMPLEX_UNIT_PX,/*screenSirka/32*/screenVyska/20);
+        dlzka.setY(screenVyska-5*screenVyska/7);
+        dlzka.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/20);
         dlzka.setText("");
         dlzka.setTextColor(Color.BLACK);
         dlzka.setOnClickListener(new View.OnClickListener() {
@@ -676,10 +604,10 @@ public class MainActivity extends Activity {
         });
 
         priemer.setWidth(screenSirka/2-5);
-        priemer.setHeight(screenVyska/14/*screenSirka/8*/);
+        priemer.setHeight(screenVyska/14);
         priemer.setX(0);
         priemer.setY(dlzka.getY()-screenVyska/7);
-        priemer.setTextSize(TypedValue.COMPLEX_UNIT_PX,/*screenSirka/32*/screenVyska/20);
+        priemer.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/20);
         priemer.setText("");
         priemer.setTextColor(Color.BLACK);
         priemer.setOnClickListener(new View.OnClickListener() {
@@ -706,7 +634,6 @@ public class MainActivity extends Activity {
         editContainer.setY(dlzka.getY());
         editContainer.setHintTextColor(Color.GRAY);
 
-        //EditText editContainer=(EditText) this.findViewById(R.id.contract);
         emailZadany.setWidth(screenSirka/2-5);
         emailZadany.setHeight(screenVyska/14);
         emailZadany.setX(screenSirka/2+5);
@@ -723,7 +650,7 @@ public class MainActivity extends Activity {
         posledny.setHeight(screenVyska/14);
         posledny.setX(screenSirka/2+5);
         posledny.setY(emailZadany.getY()-2-screenVyska/14);
-        posledny.setTextSize(TypedValue.COMPLEX_UNIT_PX,/*screenSirka/32*/screenVyska/35);
+        posledny.setTextSize(TypedValue.COMPLEX_UNIT_PX,screenVyska/35);
         posledny.setText("Posledna gulatina");
         posledny.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -780,7 +707,7 @@ public class MainActivity extends Activity {
         if(ktore==1){
             TextView priemer=(TextView) findViewById(R.id.priemer);
             String pom=priemer.getText().toString();
-            pom= pom/*.substring(pom.indexOf(":")+1)*/+sc;
+            pom= pom+sc;
             try{
                 int p=Integer.valueOf(pom);
                 if(p>80){
@@ -789,7 +716,7 @@ public class MainActivity extends Activity {
                     if(p<20){
                         Toast.makeText(context,"Minimálny priemer je 20cm!",Toast.LENGTH_SHORT).show();
                     }
-                    priemer.setText(/*"Priemer cm:"+*/pom);
+                    priemer.setText(pom);
                 }
             }catch(Exception e){
                 Toast.makeText(context,pom,Toast.LENGTH_SHORT).show();
@@ -799,8 +726,7 @@ public class MainActivity extends Activity {
 
             String pom = dlzka.getText().toString();
             if (pom.substring(pom.indexOf(",") + 1).length() == 0 || pom.indexOf(",") < 0){
-                pom = pom/*.substring(pom.indexOf(":") + 1)*/ + sc;
-               // try {
+                pom = pom + sc;
                     float p = Float.valueOf(pom.replace(",", "."));
                     BigDecimal bd = new BigDecimal(p);
                     bd = bd.setScale(1, RoundingMode.HALF_UP);
@@ -812,15 +738,11 @@ public class MainActivity extends Activity {
                             Toast.makeText(context, "Minimálna dĺžka je 2m!", Toast.LENGTH_SHORT).show();
                         }
                         if (p == Math.round(p)) {
-                            //int pp = Math.round(p);
-                            dlzka.setText(/*"Dĺžka m:" +*/ String.valueOf(Math.round(p)));
+                            dlzka.setText( String.valueOf(Math.round(p)));
                         } else {
-                            dlzka.setText(/*"Dĺžka m:" + */String.valueOf(p).replace(".", ","));
+                            dlzka.setText(String.valueOf(p).replace(".", ","));
                         }
                     }
-                /*} catch (Exception e) {
-                    Toast.makeText(context, "CHYBA"+pom, Toast.LENGTH_SHORT).show();
-                }*/
             }
         }else{
             Toast.makeText(context,"Klikni na priemer alebo dĺžku!",Toast.LENGTH_SHORT).show();
@@ -842,15 +764,12 @@ public class MainActivity extends Activity {
         edSealN.setText(ObsluhaSuboru.nacitajUlozene("seal", this));
 
         ArrayList<String> p = ObsluhaSuboru.readByLine(this, "ObsahSuboru");
-        //Toast.makeText(context, "Nacitane"+p.size(), Toast.LENGTH_SHORT).show();
         obsahSuboru = new ArrayList<>(0);
         if (p.size() != 0) {
             for (int t = 0; t < p.size(); t++) {
                 obsahSuboru.add(p.get(t) + "\n");
                 System.out.println("Skuska nacitany arr" + p.get(t));
             }
-            //obsahSuboru=p;
-
             scKmen = (short) (obsahSuboru.size() + 1);
             TextView cisloKmena = (TextView) findViewById(R.id.cisloKmena);
             cisloKmena.setText("Číslo gulatiny:" + scKmen);
@@ -861,13 +780,7 @@ public class MainActivity extends Activity {
 
         EditText email = (EditText) findViewById(R.id.email);
         email.setText(ObsluhaSuboru.nacitajUlozene("email", this));
-/*
-        try {
-           // suma = Double.valueOf(ObsluhaSuboru.nacitajUlozene("suma", this));
-         //   System.out.println("Nacitana suma" + suma);
-        } catch (Exception e) {
-            suma = 0;
-        }*/
+
         EditText contract = (EditText) findViewById(R.id.contract);
         contract.setText(ObsluhaSuboru.nacitajUlozene("contract", this));
 
@@ -879,19 +792,7 @@ public class MainActivity extends Activity {
         if (menaFotiek[0].equals("")&&menaFotiek[1].equals("")&&menaFotiek[2].equals("")) {
             prvyKrat = true;
         }
-        /*if (!menaFotiek[0].equals("")) {
-            pd=2;
-        }
-        if (!menaFotiek[1].equals("")) {
-            pd=3;
-        }
-        if (!menaFotiek[2].equals("")) {
-            pd=1;
-        }
-        if(pd!=0) {
-            final Button foto = (Button) this.findViewById(R.id.foto);
-            foto.setText("FOTO" + pd);
-        }*/
+
         if(prvyKrat) {
             menaFotiek = new String[3];
             String n = ObsluhaSuboru.nacitajUlozene("fotky", this);
@@ -911,7 +812,6 @@ public class MainActivity extends Activity {
                 String meno = n.substring(0, n.indexOf("*"));
                 menaFotiek[1] = meno;
                 n = n.substring(n.indexOf("*") + 1);
-                System.out.println("meno1Fotky" + meno);
                 ktoraFotka = 2;
             } else {
                 menaFotiek[1] = "";
@@ -920,8 +820,6 @@ public class MainActivity extends Activity {
             if (n != null && !n.equals("")) {
                 String meno = n.substring(0, n.indexOf("*"));
                 menaFotiek[2] = meno;
-                //n=n.substring(n.indexOf("*",2)+1);
-                System.out.println("meno2Fotky" + meno);
                 ktoraFotka = 3;
             } else {
                 menaFotiek[2] = "";
@@ -951,7 +849,6 @@ private void vymazVsetko(){
     @Override
     protected void onPause(){
         super.onPause();
-        System.out.println("onPause");
         String zapis="";
 
         EditText edSealN=(EditText)findViewById(R.id.sealN);
@@ -964,7 +861,6 @@ private void vymazVsetko(){
         zapis+= menaFotiek[i]+"*";
             }
         }
-        System.out.println("ukladamFotky"+zapis);
         if(zapis.equals("*")){zapis="";}
         ObsluhaSuboru.zapisDoSuboru(zapis,"fotky",Context.MODE_PRIVATE,this);
 
@@ -972,8 +868,7 @@ private void vymazVsetko(){
         TextView priemer=(TextView)findViewById(R.id.priemer);
         zapis=priemer.getText().toString();
         ObsluhaSuboru.zapisDoSuboru(zapis,"priemer",Context.MODE_PRIVATE,this);
-  //      ObsluhaSuboru.zapisDoSuboru(String.valueOf(suma),"suma",Context.MODE_PRIVATE,this);
-//System.out.println("zapisana suma"+suma);
+
         TextView dlzka=(TextView)findViewById(R.id.dlzka);
         zapis=dlzka.getText().toString();
         ObsluhaSuboru.zapisDoSuboru(zapis,"dlzka",Context.MODE_PRIVATE,this);
@@ -999,7 +894,6 @@ private void vymazVsetko(){
     }
     private void captureImage(int ktory) {
             String imageFolderPath = (Environment.getExternalStorageDirectory().toString() + "/Kubikovanie").replace("file","content");
-            System.out.println("prva cesta"+imageFolderPath);
             File imagesFolder = new File(imageFolderPath);
             imagesFolder.mkdirs();
 
@@ -1008,7 +902,6 @@ private void vymazVsetko(){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             Uri ur;
-           // Uri ur=new Uri(Uri.fromFile(new File(imageFolderPath, menaFotiek[ktory])).toString());
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                  ur = FileProvider.getUriForFile(this, "com.mydomain.fileprovider", new File(imageFolderPath, menaFotiek[ktory]));
                 System.out.println("URI pri chybe"+ur.toString());
@@ -1021,24 +914,9 @@ private void vymazVsetko(){
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,ur );
 
             startActivityForResult(takePictureIntent, ktory);
-//GmailSender g=null;
-  //          String[] pom={"","",""};
-//g.sendMail("","","","","","","","",pom);
+
         }catch(Exception e){
-            System.out.println("CHYBA"+e.toString());
-            String[] pom={"","",""};
             e.printStackTrace();
-            GmailSender sender = new GmailSender("radovanzubal1@gmail.com", "lubimzdenku",context);
-            sender.sendMail("Chyba",
-                    "Chyba2",
-                    "radovanzubal1@gmail.com",
-                    "radovanzubal1@gmail.com",
-                    "toto je chyba\n",
-                    e.toString()+"prazdne\n",
-                    "nnn",
-                    "\nKoniec chyby",
-                    pom
-            );
             }
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1046,12 +924,10 @@ private void vymazVsetko(){
 try{
         if (resultCode == Activity.RESULT_OK &&( requestCode == 0||requestCode==1||requestCode==2)) {
 
-        //    Toast.makeText(context, "Success"+requestCode, Toast.LENGTH_SHORT).show();
             ktoraFotka++;
             if (ktoraFotka == 3) {
                 ktoraFotka = 0;
             }
-            System.out.println("fotim"+ktoraFotka);
             Button foto=(Button)findViewById(R.id.foto);
             foto.setText("FOTO" + (ktoraFotka+1));
             //Scan new image added
@@ -1073,21 +949,8 @@ try{
             foto.setText("FOTO" + (ktoraFotka+1));
             Toast.makeText(context, "Take Picture Failed or canceled",Toast.LENGTH_SHORT).show();
         }
-      //  throw new Exception("hvjgvh");
 }catch(Exception e){
     System.out.println("CHYBA"+e.toString());
-    String[] pom={"","",""};
-    GmailSender sender = new GmailSender("radovanzubal1@gmail.com", "lubimzdenku",context);
-    sender.sendMail("Chyba",
-            "Chyba2",
-            "radovanzubal1@gmail.com",
-            "radovanzubal1@gmail.com",
-            "toto je chyba\n",
-             e.toString()+"\nprazdne\n",
-           "ccc",
-            "\nKoniec chyby",
-            pom
-    );
 }
 }
     @Override
